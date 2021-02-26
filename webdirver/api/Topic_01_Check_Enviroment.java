@@ -41,6 +41,11 @@ public class Topic_01_Check_Enviroment {
 		Assert.assertTrue(driver.findElement(By.xpath("//form[@name='frmLogin']")).isDisplayed());
 	}
 
+	@Test
+	public void TC_04_Test_Pull_Push() {
+	// Test Pull Push
+	Assert.assertTrue(driver.findElement(By.xpath("//form[@name='frmLogin']")).isDisplayed());
+}
 	@AfterClass
 	public void afterClass() {
 		driver.quit();
