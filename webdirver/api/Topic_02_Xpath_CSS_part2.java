@@ -52,7 +52,7 @@ public class Topic_02_Xpath_CSS_part2 {
 		driver.findElement(By.partialLinkText("Hồ sơ tài")).click();
 		Thread.sleep(3000);
 	}
-	//lay text cua link tuong doi(lay 1 phan chuoi)
+	//lay text cua link tuong doi(lay 1 phan chuoi).
 	@Test
 	public void TC_07_Css_Selector() throws InterruptedException {
 		driver.get("https://m.facebook.com/");
