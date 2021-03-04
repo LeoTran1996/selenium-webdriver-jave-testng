@@ -62,6 +62,8 @@ public class Topic_02_Xpath_CSS_part2 {
 	}
 	@Test
 	public void TC_08_Xpath_Selector() {
+		driver.get("https://m.facebook.com/");
+
 	}
 	
 	@AfterClass
