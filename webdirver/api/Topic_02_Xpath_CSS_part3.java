@@ -27,26 +27,44 @@ public class Topic_02_Xpath_CSS_part3 {
 		driver.findElement(By.id("email")).sendKeys("");
 		driver.findElement(By.name("login[password]")).sendKeys("");
 		driver.findElement(By.xpath("//button[@title='Login']")).click();
-		Assert.assertEquals(driver.findElement(By.id("advice-required-entry-email")).getText(),"This is a required field.");
-		Assert.assertEquals(driver.findElement(By.id("advice-required-entry-pass")).getText(),"This is a required field.");
+		Assert.assertEquals(driver.findElement(By.id("advice-required-entry-email")).getText(),
+				"This is a required field.");
+		Assert.assertEquals(driver.findElement(By.id("advice-required-entry-pass")).getText(),
+				"This is a required field.");
 	}
 
 	@Test
 	public void TC_02_Login_With_Invalid_Email() {
 		driver.get("http://live.demoguru99.com/index.php/");
 		driver.findElement(By.xpath("//div[@class='footer']//a[text()='My Account']")).click();
-		driver.findElement(By.id("email")).sendKeys("anhtran.abc.123");
-		
+		driver.findElement(By.id("email")).sendKeys("anhtran.abc@123");
+		driver.findElement(By.id("pass")).sendKeys("123456");
+		driver.findElement(By.xpath("//button[@id='send2']")).click();
+		Assert.assertEquals(driver.findElement(By.xpath("//div[@id='advice-validate-email-email']")).getText(),
+				"Please enter a valid email address. For example johndoe@domain.com.");
 
 	}
 
 	@Test
-	public void TC_03_Login_With_Incorrect_Password() {
+	public void TC_03_Login_With_Invalid_Password() {
+		driver.get("http://live.demoguru99.com/index.php/");
+		driver.findElement(By.xpath("//div[@class='footer']//a[text()='My Account']")).click();
+		driver.findElement(By.id("email")).sendKeys("anhtran1996@gmail.com");
+		driver.findElement(By.id("pass")).sendKeys("123");
+		driver.findElement(By.xpath("//button[@id='send2']")).click();
+		Assert.assertEquals(driver.findElement(By.xpath("//div[@id='advice-validate-password-pass']")).getText(),"Please enter 6 or more characters without leading or trailing spaces.");
 
 	}
 
 	@Test
-	public void TC_04_ID() {
+	public void TC_04_Login_with_Icorrect_Email_And_Password() {
+		driver.get("http://live.demoguru99.com/index.php/");
+		driver.findElement(By.xpath("//div[@class='footer']//a[text()='My Account']")).click();
+		driver.findElement(By.id("email")).sendKeys("anhtran1996@gmail.com");
+		driver.findElement(By.id("pass")).sendKeys("123456");
+		driver.findElement(By.xpath("//button[@id='send2']")).click();
+		Assert.assertEquals(driver.findElement(By.xpath("//li[@class='error-msg']//span")).getText(),"Invalid login or password.");
+
 
 	}
 
