@@ -52,7 +52,8 @@ public class Topic_02_Xpath_CSS_part3 {
 		driver.findElement(By.id("email")).sendKeys("anhtran1996@gmail.com");
 		driver.findElement(By.id("pass")).sendKeys("123");
 		driver.findElement(By.xpath("//button[@id='send2']")).click();
-		Assert.assertEquals(driver.findElement(By.xpath("//div[@id='advice-validate-password-pass']")).getText(),"Please enter 6 or more characters without leading or trailing spaces.");
+		Assert.assertEquals(driver.findElement(By.xpath("//div[@id='advice-validate-password-pass']")).getText(),
+				"Please enter 6 or more characters without leading or trailing spaces.");
 
 	}
 
@@ -63,10 +64,20 @@ public class Topic_02_Xpath_CSS_part3 {
 		driver.findElement(By.id("email")).sendKeys("anhtran1996@gmail.com");
 		driver.findElement(By.id("pass")).sendKeys("123456");
 		driver.findElement(By.xpath("//button[@id='send2']")).click();
-		Assert.assertEquals(driver.findElement(By.xpath("//li[@class='error-msg']//span")).getText(),"Invalid login or password.");
-
+		Assert.assertEquals(driver.findElement(By.xpath("//li[@class='error-msg']//span")).getText(),
+				"Invalid login or password.");
+		sleepInsecond(2);
 
 	}
+	public void sleepInsecond(long time) {
+		try {
+			Thread.sleep(time * 1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	
 
 	@Test
 	public void TC_05_ID() {
