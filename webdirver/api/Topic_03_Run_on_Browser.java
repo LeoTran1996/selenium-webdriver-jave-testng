@@ -5,7 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.Test;
 
-public class Topic3_Run_on_Browser {
+public class Topic_03_Run_on_Browser {
 	String projectlocation = System.getProperty("user.dir");
 
 	WebDriver driver;
