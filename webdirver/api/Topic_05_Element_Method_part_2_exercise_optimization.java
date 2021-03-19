@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -12,6 +13,13 @@ import org.testng.annotations.Test;
 
 public class Topic_05_Element_Method_part_2_exercise_optimization {
 	WebDriver driver;
+	By emailTextboxStatus = By.cssSelector("#mail");
+	By ageUnderEighteenRadioStatus = By.id("under_18");
+	By educationTextAreaStatus = By.cssSelector("#edu");
+	By spliderTwoStatus = By.cssSelector("#slider-2");
+	By slider1 = By.cssSelector("#slider-1");
+	By slider2 = By.cssSelector("#slider-2");
+	By javaCheckbox = By.cssSelector("#java");
 
 	@BeforeClass
 	public void beforeClass() {
@@ -23,128 +31,92 @@ public class Topic_05_Element_Method_part_2_exercise_optimization {
 	@Test
 
 	public void TC_01_isDisplayed() {
+
 		driver.get("https://automationfc.github.io/basic-form/index.html");
-		boolean emailTextboxStatus = driver.findElement(By.cssSelector("#mail")).isDisplayed();
-
-		if (emailTextboxStatus == true) {
-			driver.findElement(By.cssSelector("#mail")).sendKeys("Automation Testing");
-			System.out.println("Email Textbox element is displayed");
-
-		} else {
-			System.out.println("Email Textbox element is not displayed");
+		if (isElementDisplayed(emailTextboxStatus)) {
+			sendkeyToElement(emailTextboxStatus, "Automation Testing");
+		}
+		if (isElementDisplayed(educationTextAreaStatus)) {
+			sendkeyToElement(educationTextAreaStatus, "Automation Testing");
 		}
 
-		boolean ageUnderEighteenRadioStatus = driver.findElement(By.xpath("//label[text()='Under 18']")).isDisplayed();
+		if (isElementDisplayed(ageUnderEighteenRadioStatus)) {
+			clickToElement(ageUnderEighteenRadioStatus);
 
-		if (ageUnderEighteenRadioStatus) {
-			driver.findElement(By.id("under_18")).click();
-			System.out.println("Under 18 Radion button element is displayed");
-		} else {
-			System.out.println("Under 18 Radion button is not displayed");
 		}
-
-		boolean educationTextAreaStatus = driver.findElement(By.cssSelector("#edu")).isDisplayed();
-
-		if (educationTextAreaStatus) {
-			driver.findElement(By.cssSelector("#edu")).sendKeys("Automation Testing");
-			System.out.println("Education Textarea element is displayed");
-		} else {
-			System.out.println("Education Textarea is not displayed");
-		}
-
 	}
 
 	@Test
 	public void TC_02_isEnabled() {
 		driver.get("https://automationfc.github.io/basic-form/index.html");
-		boolean emailTextboxStatus = driver.findElement(By.cssSelector("#mail")).isEnabled();
-
-		if (emailTextboxStatus) {
-			System.out.println("Email Textbox is enabled");
-
-		} else {
-			System.out.println("Email Textbox is disabled");
-
-		}
-		boolean ageUnderEighteenRadioStatus = driver.findElement(By.id("under_18")).isEnabled();
-
-		if (ageUnderEighteenRadioStatus) {
-			System.out.println("ageUnderEighteenRadioStatus is enabled");
-
-		} else {
-			System.out.println("ageUnderEighteenRadioStatus is disabled");
-
-		}
-
-		boolean educationTextAreaStatus = driver.findElement(By.cssSelector("#edu")).isDisplayed();
-
-		if (educationTextAreaStatus) {
-			System.out.println("educationTextAreaStatus is enabled");
-
-		} else {
-			System.out.println("educationTextAreaStatus is disabled");
-
-		}
-		boolean spliderTwoStatus = driver.findElement(By.cssSelector("#slider-2")).isEnabled();
-
-		if (spliderTwoStatus) {
-			System.out.println("spliderTwoStatus is enabled");
-
-		} else {
-			System.out.println("spliderTwoStatus is disabled");
-
-		}
-		boolean spliderOneStatus = driver.findElement(By.cssSelector("#slider-1")).isEnabled();
-
-		if (spliderOneStatus) {
-			System.out.println("spliderOneStatus is enabled");
-
-		} else {
-			System.out.println("spliderOneStatus is disabled");
-
-		}
+		Assert.assertTrue(isElementEnabled(emailTextboxStatus));
+		Assert.assertTrue(isElementEnabled(slider1));
+		Assert.assertFalse(isElementEnabled(slider2));
 
 	}
 
 	@Test
 	public void TC_03_isSelected() {
+
 		driver.get("https://automationfc.github.io/basic-form/index.html");
 
-		driver.findElement(By.id("under_18")).click();
-		driver.findElement(By.cssSelector("#java")).click();
+		clickToElement(ageUnderEighteenRadioStatus);
+		clickToElement(javaCheckbox);
 
-		Assert.assertTrue(driver.findElement(By.id("under_18")).isSelected());
+		Assert.assertTrue(isElementSelected(ageUnderEighteenRadioStatus));
+		Assert.assertTrue(isElementSelected(javaCheckbox));
 
-		driver.findElement(By.id("under_18")).click();
-		driver.findElement(By.cssSelector("#java")).click();
+		clickToElement(ageUnderEighteenRadioStatus);
+		clickToElement(javaCheckbox);
 
-		Assert.assertTrue(driver.findElement(By.id("under_18")).isSelected());
-		Assert.assertFalse(driver.findElement(By.cssSelector("#java")).isSelected());
+		Assert.assertTrue(isElementSelected(ageUnderEighteenRadioStatus));
+		Assert.assertFalse(isElementSelected(javaCheckbox));
+	}
 
-		boolean ageUnderEighteen = driver.findElement(By.id("under_18")).isSelected();
-		boolean javaCheckbox = driver.findElement(By.cssSelector("#java")).isSelected();
-
-		if (ageUnderEighteen) {
-			System.out.println("ageUnderEighteen is selected");
-
+	public boolean isElementSelected(By by) {
+		WebElement element = driver.findElement(by);
+		if (element.isSelected()) {
+			System.out.println("Element is selected");
+			return true;
 		} else {
-			System.out.println("ageUnderEighteen is unselected");
-
+			System.out.println("Element is not selected");
 		}
-		if (javaCheckbox) {
-			System.out.println("javaCheckbox is selected");
+		return false;
 
+	}
+
+	public boolean isElementEnabled(By by) {
+		WebElement element = driver.findElement(by);
+		if (element.isEnabled()) {
+			System.out.println("Element is Enabled");
+			return true;
 		} else {
-			System.out.println("javaCheckbox is unselected");
-
+			System.out.println("Element is Disable");
+			return false;
 		}
 
 	}
 
-	// @Test
-	public void TC_04_isDisplayed() {
-		driver.get("https://automationfc.github.io/basic-form/index.html");
+	public boolean isElementDisplayed(By by) {
+		WebElement element = driver.findElement(by);
+		if (element.isDisplayed() == true) {
+			System.out.println("Element is displayed");
+			return true;
+		} else {
+			System.out.println("Element is not displayed");
+			return false;
+		}
+	}
 
+	public void sendkeyToElement(By by, String value) {
+		WebElement element = driver.findElement(by);
+		element.clear();
+		element.sendKeys(value);
+	}
+
+	public void clickToElement(By by) {
+		WebElement element = driver.findElement(by);
+		element.click();
 	}
 
 	@AfterClass
