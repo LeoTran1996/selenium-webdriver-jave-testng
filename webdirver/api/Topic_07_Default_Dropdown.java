@@ -1,6 +1,7 @@
 package api;
 
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -30,7 +31,8 @@ public class Topic_07_Default_Dropdown {
 
 		firstName = "Anh";
 		lastName = "Tran";
-		email = "anhtranqc@gmail.com";
+		email = "anhtran" + getRandomNumber() + "@gmail.com";
+				
 		company = "wimagic";
 		password = "123456";
 		
@@ -89,10 +91,12 @@ public class Topic_07_Default_Dropdown {
 		checkToCheckboxOrRadio(newLetterCheckbox);
 		driver.findElement(By.cssSelector("#Password")).sendKeys(password);
 		driver.findElement(By.cssSelector("#ConfirmPassword")).sendKeys(password);
-	
+		
+		
 		/* 3 - Đăng kí */
-		driver.findElement(By.cssSelector("#register-button")).click();
-
+		driver.findElement(By.id("register-button")).click();
+		driver.findElement(By.id("register-button")).click();
+		sleepInSecond(5);
 		/* 4 - Kiểm tra xuất hiên message đăng kí thành công */
 		Assert.assertEquals(driver.findElement(By.xpath("//div[text()='Your registration completed']")).getText(), "Your registration completed");
 
@@ -113,7 +117,9 @@ public class Topic_07_Default_Dropdown {
 		Assert.assertEquals(select.getFirstSelectedOption().getText(), month);
 		select = new Select(driver.findElement(By.xpath("//select[@name='DateOfBirthYear']")));
 		Assert.assertEquals(select.getFirstSelectedOption().getText(), year);
-	}
+
+		
+	} 
 
 	public void checkToCheckboxOrRadio(By by) {
 		WebElement element = driver.findElement(by);
@@ -131,6 +137,11 @@ public class Topic_07_Default_Dropdown {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public int getRandomNumber() {
+		Random rand = new Random();
+		return rand.nextInt(9999);
 	}
 
 	@AfterClass
