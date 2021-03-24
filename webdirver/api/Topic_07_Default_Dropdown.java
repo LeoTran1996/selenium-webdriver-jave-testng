@@ -1,5 +1,6 @@
 package api;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -31,19 +32,18 @@ public class Topic_07_Default_Dropdown {
 
 		firstName = "Anh";
 		lastName = "Tran";
-		email = "anhtran" + getRandomNumber() + "@gmail.com";
-				
 		company = "wimagic";
 		password = "123456";
-		
-		day ="3";
-		month="March";
-		year="1996";
+
+		day = "3";
+		month = "March";
+		year = "1996";
 
 	}
 
 	@Test
 	public void TC_01_Register() {
+		email = "anhtran" + getRandomNumber() + "@gmail.com";
 		/* 1 - Mở trang Resgister */
 		driver.findElement(By.xpath("//a[text()='Register']")).click();
 
@@ -91,14 +91,14 @@ public class Topic_07_Default_Dropdown {
 		checkToCheckboxOrRadio(newLetterCheckbox);
 		driver.findElement(By.cssSelector("#Password")).sendKeys(password);
 		driver.findElement(By.cssSelector("#ConfirmPassword")).sendKeys(password);
-		
-		
+
 		/* 3 - Đăng kí */
 		driver.findElement(By.id("register-button")).click();
 		driver.findElement(By.id("register-button")).click();
 		sleepInSecond(5);
 		/* 4 - Kiểm tra xuất hiên message đăng kí thành công */
-		Assert.assertEquals(driver.findElement(By.xpath("//div[text()='Your registration completed']")).getText(), "Your registration completed");
+		Assert.assertEquals(driver.findElement(By.xpath("//div[text()='Your registration completed']")).getText(),
+				"Your registration completed");
 
 		/* 5 - Vào trang my account */
 		driver.findElement(By.cssSelector(".ico-account")).click();
@@ -110,7 +110,7 @@ public class Topic_07_Default_Dropdown {
 		Assert.assertEquals(driver.findElement(By.cssSelector("#Email")).getAttribute("value"), email);
 		Assert.assertEquals(driver.findElement(By.cssSelector("#Company")).getAttribute("value"), company);
 		Assert.assertTrue(driver.findElement(By.cssSelector("#Newsletter")).isSelected());
-		
+
 		select = new Select(driver.findElement(By.xpath("//select[@name='DateOfBirthDay']")));
 		Assert.assertEquals(select.getFirstSelectedOption().getText(), day);
 		select = new Select(driver.findElement(By.xpath("//select[@name='DateOfBirthMonth']")));
@@ -118,8 +118,43 @@ public class Topic_07_Default_Dropdown {
 		select = new Select(driver.findElement(By.xpath("//select[@name='DateOfBirthYear']")));
 		Assert.assertEquals(select.getFirstSelectedOption().getText(), year);
 
-		
-	} 
+	}
+
+	@Test
+
+	public void TC_02_Multiple_Select() {
+
+		driver.get("https://automationfc.github.io/basic-form/index.html");
+		select = new Select(driver.findElement(By.xpath("//select[@id='job2']")));
+
+		ArrayList<String> allItemsText = new ArrayList<String>();
+
+		allItemsText.add("Automation");
+		allItemsText.add("Manual");
+		allItemsText.add("Mobile");
+		allItemsText.add("Security");
+
+		// Chon 4 items
+		for (String item : allItemsText) {
+			select.selectByVisibleText(item);
+		}
+
+		// Kiem tra co ho tro multiple hay khong
+		Assert.assertTrue(select.isMultiple());
+
+		// Kiem tra da chon dung 4 items thanh cong
+		List<WebElement> allISelectedItems = select.getAllSelectedOptions();
+		ArrayList<String> allLSelectedText = new ArrayList<String>();
+
+		for (WebElement item : allISelectedItems) {
+			allLSelectedText.add(item.getText());
+
+		}
+
+		Assert.assertEquals(allLSelectedText.size(), 4);
+		Assert.assertEquals(allItemsText, allLSelectedText);
+
+	}
 
 	public void checkToCheckboxOrRadio(By by) {
 		WebElement element = driver.findElement(by);
@@ -138,7 +173,7 @@ public class Topic_07_Default_Dropdown {
 		}
 
 	}
-	
+
 	public int getRandomNumber() {
 		Random rand = new Random();
 		return rand.nextInt(9999);
