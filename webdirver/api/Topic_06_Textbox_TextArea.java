@@ -11,7 +11,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class Topic6 {
+public class Topic_06_Textbox_TextArea {
 
 	WebDriver driver;
 	String loginPageURL, userID, password;
