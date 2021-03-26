@@ -3,13 +3,11 @@ package api;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.validator.PublicClassValidator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -57,15 +55,15 @@ public class Topic_08_Custom_Dropdown {
 	 * nao khong nam trong tam nhin thay -> Scroll -> Click - Bam vao item can chon
 	 * - Kiem tra xem chon dung chua
 	 */
-	public void selectItemInCustomDropdown(String parentXpath, String allIteamXpath, String expectedText) {
+	public void selectItemInCustomDropdown(String parentXpath, String allItemsXpath, String expectedText) {
 		driver.findElement(By.xpath(parentXpath)).click();
 		sleepInSecond(1);
 
 		// Cho cac item duoc hien thi ra truoc khi chon
-		expilitwait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(allIteamXpath)));
+		expilitwait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(allItemsXpath)));
 
 		// Lay tat cac cac item luu vao 1 List de duyet qua
-		List<WebElement> allItem = driver.findElements(By.xpath(allIteamXpath));
+		List<WebElement> allItem = driver.findElements(By.xpath(allItemsXpath));
 
 		// Dung vong lap duyet tung Item
 
@@ -90,11 +88,10 @@ public class Topic_08_Custom_Dropdown {
 		
 		selectItemInCustomDropdown("//select[@name='DateOfBirthDay']", "//select[@name='DateOfBirthDay']/option", "15");
 		selectItemInCustomDropdown("//select[@name='DateOfBirthMonth']", "//select[@name='DateOfBirthMonth']/option", "March");
-		selectItemInCustomDropdown("//select[@name='DateOfBirthYear']", "//select[@name='DateOfBirthYear']/option", "1996");
-		
+		selectItemInCustomDropdown("//select[@name='DateOfBirthYear']", "//select[@name='DateOfBirthYear']/option", "1996");	
 	}
 	
-	@Test
+	
 	public void TC_03_Angular() {
 		driver.get("https://ej2.syncfusion.com/angular/demos/?_ga=2.262049992.437420821.1575083417-524628264.1575083417#/material/drop-down-list/data-binding");
 		selectItemInCustomDropdown("//ejs-dropdownlist[@id='games']", "//ul[@id='games_options']/li", "Basketball");
@@ -106,6 +103,71 @@ public class Topic_08_Custom_Dropdown {
 		selectItemInCustomDropdown("//ejs-dropdownlist[@id='games']", "//ul[@id='games_options']/li", "Tennis");
 		sleepInSecond(1);
 		Assert.assertEquals(getAngularDropdownSelectedItemText(), "Tennis");
+		
+	}
+	
+	
+	public void TC4_React() {
+		driver.get("https://react.semantic-ui.com/maximize/dropdown-example-selection/");
+		selectItemInCustomDropdown("//div[@role='listbox']", "//div[@role='option']/span", "Christian");
+		sleepInSecond(1);
+		Assert.assertEquals(driver.findElement(By.xpath("//div[@class='divider text']")).getText(), "Christian");
+		
+		driver.get("https://react.semantic-ui.com/maximize/dropdown-example-selection/");
+		selectItemInCustomDropdown("//div[@role='listbox']", "//div[@role='option']/span", "Matt");
+		sleepInSecond(1);
+		Assert.assertEquals(driver.findElement(By.xpath("//div[@class='divider text']")).getText(), "Matt");
+		
+		driver.get("https://react.semantic-ui.com/maximize/dropdown-example-selection/");
+		selectItemInCustomDropdown("//div[@role='listbox']", "//div[@role='option']/span", "Stevie Feliciano");
+		sleepInSecond(1);
+		Assert.assertEquals(driver.findElement(By.xpath("//div[@class='divider text']")).getText(), "Stevie Feliciano");
+	}
+
+	
+	public void TC_05_VueJS() {
+		driver.get("https://mikerodham.github.io/vue-dropdowns/");
+		selectItemInCustomDropdown("//li[@class='dropdown-toggle']", "//ul[@class='dropdown-menu']//a", "First Option");
+		sleepInSecond(1);
+		Assert.assertEquals(driver.findElement(By.xpath("//li[@class='dropdown-toggle']")).getText(), "First Option");
+		
+		driver.get("https://mikerodham.github.io/vue-dropdowns/");
+		selectItemInCustomDropdown("//li[@class='dropdown-toggle']", "//ul[@class='dropdown-menu']//a", "Second Option");
+		sleepInSecond(1);
+		Assert.assertEquals(driver.findElement(By.xpath("//li[@class='dropdown-toggle']")).getText(), "Second Option");
+		
+		driver.get("https://mikerodham.github.io/vue-dropdowns/");
+		selectItemInCustomDropdown("//li[@class='dropdown-toggle']", "//ul[@class='dropdown-menu']//a", "Third Option");
+		sleepInSecond(1);
+		Assert.assertEquals(driver.findElement(By.xpath("//li[@class='dropdown-toggle']")).getText(), "Third Option");
+	}
+	
+	@Test
+	public void TC_06_Ediable() {
+		driver.get("https://react.semantic-ui.com/maximize/dropdown-example-search-selection/");
+		selectItemInCustomDropdown("//input[@class='search']", "//div[@role='option']", "Belize");
+		sleepInSecond(1);
+		Assert.assertEquals(driver.findElement(By.xpath("//div[@class='divider text']")).getText(), "Belize");
+		
+		selectItemInEdiableBySendKeys("//input[@class='search']", "//div[@role='option']", "Armenia");
+		Assert.assertEquals(driver.findElement(By.xpath("//div[@class='divider text']")).getText(), "Armenia");
+		sleepInSecond(1);
+	}
+	
+	public void selectItemInEdiableBySendKeys(String parentXpath, String allItemsXpath, String expectedKeys) {
+		
+		driver.findElement(By.xpath(parentXpath)).clear();
+		driver.findElement(By.xpath(parentXpath)).sendKeys(expectedKeys);
+		sleepInSecond(1);
+		List<WebElement> allItems = expilitwait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(allItemsXpath)));
+		for (WebElement item : allItems) {
+			if(item.getText().equals(expectedKeys)) {
+				item.click();
+				sleepInSecond(1);
+				break;
+			}
+		}
+		
 		
 	}
 	
