@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -90,7 +89,8 @@ public class Topic_16_Upload_File_Sendkey {
 	}
 	@Test
 	public void TC_03_Upload_Multi_File() {
-	 /*//Multi file khong uploaded tren firefox ban cu
+	 /*//Multi file khong uploaded tren firefox ban cu, phai xai firefox ban moi + selenium ban moi
+	  *  Remove selenium ban cu -> add selenium ban moi -> add geckodriver
 		//Firefox ban moi
 		if(osName.contains("Windows")) {
 			System.setProperty("webdriver.gecko.driver", projectPath + "\\Browser\\geckodriver.exe");
