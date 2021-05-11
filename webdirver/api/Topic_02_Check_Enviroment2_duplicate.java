@@ -40,6 +40,14 @@ public class Topic_02_Check_Enviroment2_duplicate {
 		// Login form displayed
 		Assert.assertTrue(driver.findElement(By.xpath("//form[@name='frmLogin']")).isDisplayed());
 	}
+	public void sleepInSecond(long time) {
+		try {
+			Thread.sleep(time * 1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@AfterClass
 	public void afterClass() {
