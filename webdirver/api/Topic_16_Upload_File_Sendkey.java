@@ -1,6 +1,7 @@
 package api;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +26,12 @@ public class Topic_16_Upload_File_Sendkey {
 	String seleniumPath1 = projectPath + getFileSeparator() + "Update_File" + getFileSeparator() + seleniumFileName1;
 	String seleniumPath2 = projectPath + getFileSeparator() + "Update_File" + getFileSeparator() + seleniumFileName2;
 	String seleniumPath3 = projectPath + getFileSeparator() + "Update_File" + getFileSeparator() + seleniumFileName3;
+	
+	String chromeAutoITOneFile = projectPath + "\\Auto_IT\\chromeUploadOneTime.exe";
+	String firefoxAutoITOneFile = projectPath + "\\Auto_IT\\firefoxUploadOneTime.exe";
+	
+	String chromeAutoITMultiFile = projectPath + "\\Auto_IT\\chromeUploadMultiple.exe";
+	String firefoxAutoITMultiFile = projectPath + "\\Auto_IT\\firefoxUploadMultiple.exe";
 	
 	@BeforeClass
 	public void beforeClass() {
@@ -87,7 +94,7 @@ public class Topic_16_Upload_File_Sendkey {
 		
 		
 	}
-	@Test
+
 	public void TC_03_Upload_Multi_File() {
 	 /*//Multi file khong uploaded tren firefox ban cu, phai xai firefox ban moi + selenium ban moi
 	  *  Remove selenium ban cu -> add selenium ban moi -> add geckodriver
@@ -114,13 +121,18 @@ public class Topic_16_Upload_File_Sendkey {
 		Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name' and text()='" + seleniumFileName3 + "'] ")).isDisplayed());
 		
 		//Click Start to up load
-		driver.findElement(By.cssSelector(".files .start")).click();
+		List <WebElement> startButtons = driver.findElements(By.cssSelector(".files .start"));
+		for (WebElement start : startButtons) {
+			start.click();
+			sleepInSecond(2);
+		}
 		
+				
 		//Verify  file uploaded successfully
 		Assert.assertTrue(driver.findElement(By.xpath("//a[text()='"+ seleniumFileName1 +"']")).isDisplayed());
 		Assert.assertTrue(driver.findElement(By.xpath("//a[text()='"+ seleniumFileName2 +"']")).isDisplayed());
 		Assert.assertTrue(driver.findElement(By.xpath("//a[text()='"+ seleniumFileName3 +"']")).isDisplayed());
-		
+				
 		driver.quit();
 		*/
 		
@@ -165,6 +177,167 @@ public class Topic_16_Upload_File_Sendkey {
 		
 	}
 	
+	public void TC_04_Upload_One_File_AutoIT() throws IOException {
+		
+		//Chay tren Firefox ban moi
+		if(osName.contains("Windows")) {
+			System.setProperty("webdriver.gecko.driver", projectPath + "\\Browser\\geckodriver.exe");
+		}else {
+			System.setProperty("webdriver.gecko.driver", projectPath + "//Browser//geckodriver.exe");
+		}
+		driver = new FirefoxDriver();
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		
+		driver.get("https://blueimp.github.io/jQuery-File-Upload/");
+		
+		driver.findElement(By.cssSelector(".btn-success")).click();
+		
+		//Xu li chuc nang up load bang Auto IT
+		if(driver.toString().contains("chrome")) {
+			Runtime.getRuntime().exec(new String[]{chromeAutoITOneFile, seleniumPath1});
+		}else {
+			Runtime.getRuntime().exec(new String[]{firefoxAutoITOneFile, seleniumPath1});
+		}
+	
+		//Verify file loaded successfully
+		Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name' and text()='" + seleniumFileName1 + "'] ")).isDisplayed());
+		
+		//Click Start to up load
+		driver.findElement(By.cssSelector(".files .start")).click();
+		
+		//Verify  file uploaded successfully
+		Assert.assertTrue(driver.findElement(By.xpath("//a[text()='"+ seleniumFileName1 +"']")).isDisplayed());
+		
+		driver.quit();
+		
+		
+		/*//Chay tren Chrome
+		if(osName.contains("Window")) {
+			System.setProperty("webdriver.chrome.driver", projectPath + "\\Browser\\chromedriver.exe");
+		}else {
+			System.setProperty("webdriver.chrome.driver", projectPath + "//Browser//chromedriver.exe");
+		}
+	
+		driver = new ChromeDriver();
+		
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		
+		driver.get("https://blueimp.github.io/jQuery-File-Upload/");
+		
+		driver.findElement(By.cssSelector(".btn-success")).click();
+		
+		//Xu li chuc nang up load bang Auto IT
+		if(driver.toString().contains("chrome")) {
+			Runtime.getRuntime().exec(new String[]{chromeAutoITOneFile, seleniumPath1});
+		}else {
+			Runtime.getRuntime().exec(new String[]{firefoxAutoITOneFile, seleniumPath1});
+		}
+	
+		//Verify file loaded successfully
+		Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name' and text()='" + seleniumFileName1 + "'] ")).isDisplayed());
+		
+		//Click Start to up load
+		driver.findElement(By.cssSelector(".files .start")).click();
+		
+		//Verify  file uploaded successfully
+		Assert.assertTrue(driver.findElement(By.xpath("//a[text()='"+ seleniumFileName1 +"']")).isDisplayed());
+		
+		driver.quit(); */
+		
+		
+	}
+	
+	public void TC_05_Upload_Multi_File_AutoIT() throws IOException {
+		 /*//Multi file khong uploaded tren firefox ban cu, phai xai firefox ban moi + selenium ban moi
+		  *  Remove selenium ban cu -> add selenium ban moi -> add geckodriver
+			//Firefox ban moi
+			if(osName.contains("Windows")) {
+				System.setProperty("webdriver.gecko.driver", projectPath + "\\Browser\\geckodriver.exe");
+			}else {
+				System.setProperty("webdriver.gecko.driver", projectPath + "//Browser//geckodriver.exe");
+			}
+			driver = new FirefoxDriver();
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().window().maximize();
+			
+			driver.get("https://blueimp.github.io/jQuery-File-Upload/");
+			
+			driver.findElement(By.cssSelector(".btn-success")).click();
+			
+			//Xu li chuc nang up load bang Auto IT
+			if(driver.toString().contains("chrome")) {
+				Runtime.getRuntime().exec(new String[]{chromeAutoITMultiFile, seleniumPath1, seleniumPath2, seleniumPath3});
+			}else {
+				Runtime.getRuntime().exec(new String[]{firefoxAutoITMultiFile, seleniumPath1,seleniumPath2, seleniumPath3});
+			}
+			
+			//Verify file loaded successfully
+			Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name' and text()='" + seleniumFileName1 + "'] ")).isDisplayed());
+			Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name' and text()='" + seleniumFileName2 + "'] ")).isDisplayed());
+			Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name' and text()='" + seleniumFileName3 + "'] ")).isDisplayed());
+			
+			//Click Start to up load
+			List <WebElement> startButtons = driver.findElements(By.cssSelector(".files .start"));
+			for (WebElement start : startButtons) {
+			start.click();
+			sleepInSecond(2);
+			}
+		
+				
+			//Verify  file uploaded successfully
+			Assert.assertTrue(driver.findElement(By.xpath("//a[text()='"+ seleniumFileName1 +"']")).isDisplayed());
+			Assert.assertTrue(driver.findElement(By.xpath("//a[text()='"+ seleniumFileName2 +"']")).isDisplayed());
+			Assert.assertTrue(driver.findElement(By.xpath("//a[text()='"+ seleniumFileName3 +"']")).isDisplayed());
+				
+			driver.quit();
+			*/
+			
+			//Chrome
+			if(osName.contains("Windows")) {
+				System.setProperty("webdriver.chrome.driver", projectPath + "\\Browser\\chromedriver.exe");
+			}else {
+				System.setProperty("webdriver.chrome.driver", projectPath + "//Browser//chromedriver.exe");
+			}
+		
+			driver = new ChromeDriver();
+			
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().window().maximize();
+			
+			driver.get("https://blueimp.github.io/jQuery-File-Upload/");
+			
+			driver.findElement(By.cssSelector(".btn-success")).click();
+			
+			//Xu li chuc nang up load bang Auto IT
+			if(driver.toString().contains("chrome")) {
+				Runtime.getRuntime().exec(new String[]{chromeAutoITMultiFile, seleniumPath1, seleniumPath2, seleniumPath3});
+			}else {
+				Runtime.getRuntime().exec(new String[]{firefoxAutoITMultiFile, seleniumPath1,seleniumPath2, seleniumPath3});
+			}
+					
+			//Verify file loaded successfully
+			Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name' and text()='" + seleniumFileName1 + "'] ")).isDisplayed());
+			Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name' and text()='" + seleniumFileName2 + "'] ")).isDisplayed());
+			Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name' and text()='" + seleniumFileName3 + "'] ")).isDisplayed());
+					
+			//Click Start to up load
+			List <WebElement> startButtons = driver.findElements(By.cssSelector(".files .start"));
+			for (WebElement start : startButtons) {
+				start.click();
+				sleepInSecond(2);
+			}
+			
+					
+			//Verify  file uploaded successfully
+			Assert.assertTrue(driver.findElement(By.xpath("//a[text()='"+ seleniumFileName1 +"']")).isDisplayed());
+			Assert.assertTrue(driver.findElement(By.xpath("//a[text()='"+ seleniumFileName2 +"']")).isDisplayed());
+			Assert.assertTrue(driver.findElement(By.xpath("//a[text()='"+ seleniumFileName3 +"']")).isDisplayed());
+					
+			driver.quit();
+			
+		}
 	public void sleepInSecond(long time) {
 		try {
 			Thread.sleep(time * 1000);
