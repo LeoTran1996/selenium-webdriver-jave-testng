@@ -14,7 +14,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class Topic_17_Webdriver_Wait_Status_Element_PartI {
+public class Topic_17_Webdriver_Wait_PartI_Status_Element {
 	WebDriver driver;
 	WebDriverWait explicitWait;
 	
